@@ -1,2 +1,2 @@
 # Big Data Algorithms for Github
- Code when taking course Big Data Algorithms
+ Code when taking the course Big Data Algorithms
