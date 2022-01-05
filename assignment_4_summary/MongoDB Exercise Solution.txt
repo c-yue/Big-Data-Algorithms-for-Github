@@ -1,0 +1,1274 @@
+Assignment 4 MongoDB
+
+Yue CHEN 
+
+
+Dataset description: 
+In the database, rows of the table represents artists. 
+The table has 7 fields which is the attributes of artists. 
+The genres and song columns include list as its value. 
+
+
+1. (1 point) - Retrieve one element of the collection.
+    query:
+        db.getCollection("artistsnestedsongs").find().limit(1);
+    result:
+        { 
+        "_id" : ObjectId("6183f336408018dd1a979244"), 
+        "Artist" : "10000 Maniacs", 
+        "Popularity" : 0.3, 
+        "Link" : "/10000-maniacs/", 
+        "Genre" : "Rock", 
+        "Genres" : "Rock; Pop; Electronica; Dance; J-Pop/J-Rock; Gospel/Religioso; Infantil; Emocore", 
+        "Songs" :[...]
+        }
+
+
+2. (1 point) - Retrieve the artist name (Artist attribute) and the main genre of any artist
+for which the link to the webpage is provided.
+    query:
+        db.getCollection("artistsnestedsongs").find({Link:{$exists:true, $ne: null}},{Artist:1, Genre:1});
+    result:
+        There are 3242 artists included. Showing 10 ones below:
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979244"), 
+            "Artist" : "10000 Maniacs", 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979245"), 
+            "Artist" : "A Cruz Está Vazia", 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979246"), 
+            "Artist" : "ACEIA", 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979247"), 
+            "Artist" : "Acid Tree", 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979248"), 
+            "Artist" : "Adam Lambert", 
+            "Genre" : "Pop"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979249"), 
+            "Artist" : "Aborto Elétrico", 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924a"), 
+            "Artist" : "Adrian Suirady", 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924b"), 
+            "Artist" : NumberInt(311), 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924c"), 
+            "Artist" : "Aerosmith", 
+            "Genre" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924d"), 
+            "Artist" : "Alice Cooper", 
+            "Genre" : "Rock"
+        }
+
+
+3. (1 point) - Show the list of artist (just their name) that contain Stones in the name.
+    query:
+        db.getCollection("artistsnestedsongs").find({Artist: /.*Stones.*/},{Artist:1, _id:0});
+    result:
+        { 
+            "Artist" : "12 Stones"
+        }
+        { 
+            "Artist" : "Rolling Stones"
+        }
+
+
+4. (1 point) - Show the number of artists that are returned by the previous query.
+    query:
+        db.getCollection("artistsnestedsongs").find({Artist: /.*Stones.*/},{ Artist:1, _id:0}).count();
+    result:
+        2
+
+
+5. (1 point) - Provide the name of the artists that have popularity greater than 4.
+    query:
+        db.getCollection("artistsnestedsongs").find({Popularity: {$gt:4}},{Artist:1,_id:0});
+    result:
+        There are 269 artists that have popularity greater than 4. Showing 10 ones below:
+        { 
+            "Artist" : "Aerosmith"
+        }
+        { 
+            "Artist" : "AC/DC"
+        }
+        { 
+            "Artist" : "4 Non Blondes"
+        }
+        { 
+            "Artist" : "Bring Me The Horizon"
+        }
+        { 
+            "Artist" : "Bruce Springsteen"
+        }
+        { 
+            "Artist" : "Cássia Eller"
+        }
+        { 
+            "Artist" : "Creedence Clearwater Revival"
+        }
+        { 
+            "Artist" : "David Bowie"
+        }
+        { 
+            "Artist" : "Eric Clapton"
+        }
+        { 
+            "Artist" : "Evanescence"
+        }
+
+
+6. (1 point) - Show the artists with the lowest popularity.
+    query:
+        db.getCollection("artistsnestedsongs").find({"Popularity":{$lte:0}},{"_id":"$_id","Artist":"$Artist","Popularity":"$Popularity"});
+    result:
+        There are 1904 artists with the lowest popularity. Showing 10 ones below:
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979245"), 
+            "Artist" : "A Cruz Está Vazia", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979246"), 
+            "Artist" : "ACEIA", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979247"), 
+            "Artist" : "Acid Tree", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924a"), 
+            "Artist" : "Adrian Suirady", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979251"), 
+            "Artist" : "Abuse", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979254"), 
+            "Artist" : "Andrew W.K.", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979255"), 
+            "Artist" : "Andi Deris", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979256"), 
+            "Artist" : "Andy (Brasil)", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925a"), 
+            "Artist" : "Arthur Brown", 
+            "Popularity" : NumberInt(0)
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925e"), 
+            "Artist" : "Avante", 
+            "Popularity" : NumberInt(0)
+        }
+
+7. (1 point) - Give the list of artists that have at list 10 songs listed.
+    query:
+        db.getCollection("artistsnestedsongs").find({"Songs.10":{$exists:true}},{"Artist":1,"_id":0});
+    result:
+        There are 1970 artists that have at list 10 songs listed. Showing 10 ones below:
+        { 
+            "Artist" : "10000 Maniacs"
+        }
+        { 
+            "Artist" : "A Cruz Está Vazia"
+        }
+        { 
+            "Artist" : "Adam Lambert"
+        }
+        { 
+            "Artist" : "Aborto Elétrico"
+        }
+        { 
+            "Artist" : NumberInt(311)
+        }
+        { 
+            "Artist" : "Aerosmith"
+        }
+        { 
+            "Artist" : "Alice Cooper"
+        }
+        { 
+            "Artist" : "AC/DC"
+        }
+        { 
+            "Artist" : "Alter Bridge"
+        }
+        { 
+            "Artist" : "Aliados"
+        }
+
+
+8. (1 point) - Give the artists (if any) that do not have songs listed.
+    query:
+        db.getCollection("artistsnestedsongs").find({ "$or": [{"Songs":{$size:0}},{"Songs":{$exists:false}}]}, {"Artist":1,"_id":0});
+    result:
+        There are 51 artists that do not have songs listed. Showing 10 ones below:
+        { 
+            "Artist" : "ACEIA"
+        }
+        { 
+            "Artist" : "Los Cunhados"
+        }
+        { 
+            "Artist" : "Connexão 017"
+        }
+        { 
+            "Artist" : "Duzzão"
+        }
+        { 
+            "Artist" : "Família 4 Vidas"
+        }
+        { 
+            "Artist" : "J.C. Skilla"
+        }
+        { 
+            "Artist" : "Nedjo Negueja1"
+        }
+        { 
+            "Artist" : "Revolts Genuíno"
+        }
+        { 
+            "Artist" : "Suspeitos na Mira"
+        }
+        { 
+            "Artist" : "Amanda Hellem"
+        }
+
+
+9. (3 point) - Give the list of artists that have at list 10 distinct songs listed and the criteria
+that you used for this distinct operation.
+    query:
+        db.artistsnestedsongs.aggregate([{$unwind: "$Songs"}, 
+        {$group: {_id: {Artist: "$Artist", distinct_lyric: "$Songs.Lyric"}}},{$group: {_id: "$_id.Artist", Count: {$sum: 1}}}, 
+        {$match: {Count: {$gte: 10}}}], {allowDiskUse:true});
+    result:
+        There are 1803 artists have at list 10 distinct songs listed. Showing 10 ones below:
+        { 
+            "_id" : "Moptop", 
+            "Count" : 31.0
+        }
+        { 
+            "_id" : "Xv", 
+            "Count" : 27.0
+        }
+        { 
+            "_id" : "César e Alessandro", 
+            "Count" : 44.0
+        }
+        { 
+            "_id" : "Linkin Park", 
+            "Count" : 207.0
+        }
+        { 
+            "_id" : "Alisson & Ryan", 
+            "Count" : 18.0
+        }
+        { 
+            "_id" : "The Byrds", 
+            "Count" : 145.0
+        }
+        { 
+            "_id" : "Anderson de Souza", 
+            "Count" : 34.0
+        }
+        { 
+            "_id" : "Camisa de Vênus", 
+            "Count" : 94.0
+        }
+        { 
+            "_id" : "Kid Abelha", 
+            "Count" : 160.0
+        }
+        { 
+            "_id" : "Andi Deris", 
+            "Count" : 43.0
+        }
+
+10. (1 point) - Show the complete set of genres for 40 artists.
+    query:
+        db.getCollection("artistsnestedsongs").find({},{"Artist":1, "Genres":1}).limit(40);
+    result:
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979244"), 
+            "Artist" : "10000 Maniacs", 
+            "Genres" : "Rock; Pop; Electronica; Dance; J-Pop/J-Rock; Gospel/Religioso; Infantil; Emocore"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979245"), 
+            "Artist" : "A Cruz Está Vazia", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979246"), 
+            "Artist" : "ACEIA", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979247"), 
+            "Artist" : "Acid Tree", 
+            "Genres" : "Rock; Heavy Metal; Metal"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979248"), 
+            "Artist" : "Adam Lambert", 
+            "Genres" : "Pop; Pop/Rock; Rock; Romântico; Dance; Electronica; Emocore; Power-Pop; Axé; Gótico; R&B; Punk Rock; Pop/Punk; Black Music; Rock Alternativo; World Music; J-Pop/J-Rock; Gospel/Religioso; Hip Hop; K-Pop/K-Rock; Piano Rock; Heavy Metal; Velha Guarda; Soul Music; Hard Rock; Country; Soft Rock; Tecnopop; House; Trilha Sonora; Blues"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979249"), 
+            "Artist" : "Aborto Elétrico", 
+            "Genres" : "Rock; Punk Rock; Pós-Punk; Post-Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924a"), 
+            "Artist" : "Adrian Suirady", 
+            "Genres" : "Rock; Gótico"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924b"), 
+            "Artist" : NumberInt(311), 
+            "Genres" : "Rock; Surf Music; Reggae; Ska; Pop/Rock; Rock Alternativo; Hardcore"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924c"), 
+            "Artist" : "Aerosmith", 
+            "Genres" : "Rock; Hard Rock; Heavy Metal; Romântico; Pop/Rock; Classic Rock; Rock Alternativo; Blues; Metal; Chillout; Piano Rock; Funk; Gótico; Forró; Jovem Guarda; Hip Hop"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924d"), 
+            "Artist" : "Alice Cooper", 
+            "Genres" : "Rock; Hard Rock; Heavy Metal; Punk Rock; Classic Rock; Grunge; Trilha Sonora; Gótico"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924e"), 
+            "Artist" : "AC/DC", 
+            "Genres" : "Rock; Heavy Metal; Classic Rock; Hard Rock; Clássico; Metal; Punk Rock; Blues; Black Music; Rockabilly; Psicodelia; Funk Carioca; Rock Alternativo; Trilha Sonora; New Age; Hip Hop; New Wave; Sertanejo; Post-Rock; Pop/Rock; MPB; Electronica; Grunge; Progressivo; Pop/Punk; Funk; Forró"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97924f"), 
+            "Artist" : "Alter Bridge", 
+            "Genres" : "Rock; Hard Rock; Rock Alternativo; Heavy Metal; Grunge; Romântico; Rap; Metal; Hardcore"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979250"), 
+            "Artist" : "Aliados", 
+            "Genres" : "Rock; Pop/Rock; Rock Alternativo; Surf Music; Hardcore; Pop/Punk; Blues; R&B; Punk Rock; Axé"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979251"), 
+            "Artist" : "Abuse", 
+            "Genres" : "Rock; Hardcore"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979252"), 
+            "Artist" : "Amy Lee", 
+            "Genres" : "Rock; Gótico; Hard Rock; Rock Alternativo; Heavy Metal; Piano Rock; Romântico; Metal; Indie; Classic Rock; New Age; Funk; Electronica; Industrial; Post-Rock; Psicodelia; Funk Carioca; Infantil; Pós-Punk; Dance; Pop; Clássico; Axé; Trilha Sonora"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979253"), 
+            "Artist" : "Anberlin", 
+            "Genres" : "Rock; Rock Alternativo; Hardcore; Emocore; Gospel/Religioso"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979254"), 
+            "Artist" : "Andrew W.K.", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979255"), 
+            "Artist" : "Andi Deris", 
+            "Genres" : "Rock; Hard Rock; Heavy Metal"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979256"), 
+            "Artist" : "Andy (Brasil)", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979257"), 
+            "Artist" : "Abril", 
+            "Genres" : "Rock; Emocore; Hardcore; Pop/Rock; Rock Alternativo; Romântico; Hard Rock; Blues; World Music"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979258"), 
+            "Artist" : "Angra", 
+            "Genres" : "Rock; Heavy Metal; Hard Rock; Progressivo; Metal; Black Music; Piano Rock; Post-Rock; Romântico; Psicodelia; Hardcore; Clássico; Forró; Pagode"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979259"), 
+            "Artist" : "4 Non Blondes", 
+            "Genres" : "Rock; Pop/Rock; Rock Alternativo; Grunge; Blues; Pop; Soft Rock; Power-Pop; Piano Rock; Indie; Chillout"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925a"), 
+            "Artist" : "Arthur Brown", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925b"), 
+            "Artist" : "12 Stones", 
+            "Genres" : "Rock; Gospel/Religioso; Hard Rock; Grunge; Rock Alternativo; Hardcore; Punk Rock; Chillout; Electronica; Heavy Metal; Metal; World Music; Axé; Emocore"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925c"), 
+            "Artist" : "Asking Alexandria", 
+            "Genres" : "Rock; Hard Rock; Hardcore; Heavy Metal; Emocore; Metal; Rock Alternativo; K-Pop/K-Rock; Classic Rock; Samba; Tecnopop; Grunge; Reggae; Chillout; World Music; Pop/Rock; Black Music; Gótico; Punk Rock; New Age"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925d"), 
+            "Artist" : "Autoramas", 
+            "Genres" : "Rock; Pop/Rock; Rock Alternativo; Progressivo; Indie; Punk Rock; Hardcore; Surf Music; Electronica; Funk; Pagode; Ska; R&B; Samba; New Age; MPB; Axé; Funk Carioca; Emocore; Grunge"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925e"), 
+            "Artist" : "Avante", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97925f"), 
+            "Artist" : "Aylah", 
+            "Genres" : "Rock; Folk; MPB"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979260"), 
+            "Artist" : "Badfinger", 
+            "Genres" : "Rock; Romântico; Power-Pop; Metal; Progressivo; Pop"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979261"), 
+            "Artist" : "Banda Base", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979262"), 
+            "Artist" : "Banda Hodsi", 
+            "Genres" : "Rock; Gospel/Religioso; Rock Alternativo"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979263"), 
+            "Artist" : "Banda ContraPlano", 
+            "Genres" : "Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979264"), 
+            "Artist" : "Banda Upfive", 
+            "Genres" : "Rock; Rap"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979265"), 
+            "Artist" : "Banda Sinara", 
+            "Genres" : "Rock; MPB; Reggae; Heavy Metal; Punk Rock; Rock Alternativo; Romântico"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979266"), 
+            "Artist" : "Banda Www", 
+            "Genres" : "Rock; Pop/Rock; Surf Music; Rock Alternativo; Romântico"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979267"), 
+            "Artist" : "Barba Grunge", 
+            "Genres" : "Rock; Pop/Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979268"), 
+            "Artist" : "Barão Vermelho", 
+            "Genres" : "Rock; Pop/Rock; MPB; Romântico; Rock Alternativo; Forró; Trance; Trilha Sonora; K-Pop/K-Rock; Industrial; Blues; Axé; Sertanejo"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a979269"), 
+            "Artist" : "Beady Eye", 
+            "Genres" : "Rock; Indie; Rock Alternativo; Forró; Hard Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97926a"), 
+            "Artist" : "Beastie Boys", 
+            "Genres" : "Hip Hop; Rock; Rap; Hardcore; Punk Rock"
+        }
+        { 
+            "_id" : ObjectId("6183f336408018dd1a97926b"), 
+            "Artist" : "Ben Harper", 
+            "Genres" : "Rock; Reggae; Surf Music; Soul Music; Romântico; Folk; Pop; Pop/Rock; Blues"
+        }
+
+
+11. (1 point) - Comment on how the list is specified and on how it is possible to query this
+attribute.
+    Answer:
+        list specify a series related to the row (row represents item, product etc. and here is a artist)
+
+12. (3 points) - Give the number of artists having Folk among the genres.
+    query:
+        db.getCollection("artistsnestedsongs").find({Genres: /.*Folk.*/}).count();
+    result:
+        322
+13. (3 points) Give the number of song by main genre of the artist and language.
+    query:
+        db.getCollection("artistsnestedsongs").aggregate([{$unwind: "$Songs"}, {$group: {_id:{Lanuage:"$Songs.Idiom",Genre:"$Genre"},count: {$sum:1}}}]);
+    result:
+        { 
+            "_id" : {
+                "Lanuage" : "TAGALOG", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 4.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ITALIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 69.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SPANISH", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 631.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "KINYARWANDA", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 11.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SLOVENIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SERBIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NA", 
+                "Genre" : "Sertanejo"
+            }, 
+            "count" : 57.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "MALAY", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 3.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "FINNISH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 24.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "GERMAN", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 11.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ITALIAN", 
+                "Genre" : "Sertanejo"
+            }, 
+            "count" : 6.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "KOREAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NORWEGIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "DUTCH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "GERMAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 290.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ENGLISH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 40294.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ENGLISH", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 23108.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "PORTUGUESE", 
+                "Genre" : "Funk Carioca"
+            }, 
+            "count" : 8086.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SWEDISH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "IRISH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 5.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SERBIAN", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NYANJA", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ENGLISH", 
+                "Genre" : "Funk Carioca"
+            }, 
+            "count" : 104.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CZECH", 
+                "Genre" : "Funk Carioca"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "KURDISH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NYANJA", 
+                "Genre" : "Funk Carioca"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ITALIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 518.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NORWEGIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 6.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "HAITIAN_CREOLE", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 9.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SESOTHO", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "IRISH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 4.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "AFRIKAANS", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CEBUANO", 
+                "Genre" : "Sertanejo"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "TAGALOG", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 3.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NA", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1587.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "HMONG", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NA", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 392.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "HUNGARIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SPANISH", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 90.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "DANISH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 3.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ROMANIAN", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SLOVAK", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "FRENCH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 317.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SESOTHO", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SUNDANESE", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 5.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "DUTCH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 3.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "PORTUGUESE", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 6394.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "PORTUGUESE", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 13600.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SPANISH", 
+                "Genre" : "Funk Carioca"
+            }, 
+            "count" : 37.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NA", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1325.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SWEDISH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 26.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ENGLISH", 
+                "Genre" : "Sertanejo"
+            }, 
+            "count" : 87.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ENGLISH", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 52.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SERBIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "FRENCH", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 23.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "DANISH", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "KURDISH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "WELSH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ENGLISH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 60585.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SUNDANESE", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SWAHILI", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "POLISH", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CROATIAN", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "GERMAN", 
+                "Genre" : "Sertanejo"
+            }, 
+            "count" : 10.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "PORTUGUESE", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 15044.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NA", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 95.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "JAPANESE", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ESTONIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 12.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "RUSSIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 4.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "GALICIAN", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "PORTUGUESE", 
+                "Genre" : "Sertanejo"
+            }, 
+            "count" : 34919.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "IRISH", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ESTONIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 12.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "FRENCH", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 5.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "KINYARWANDA", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 76.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "GALICIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 12.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ARABIC", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "MALAGASY", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CEBUANO", 
+                "Genre" : "Funk Carioca"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SWAHILI", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 3.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SWAHILI", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CROATIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 5.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "NA", 
+                "Genre" : "Funk Carioca"
+            }, 
+            "count" : 60.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "BASQUE", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 3.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "TURKISH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "PORTUGUESE", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 15082.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "INDONESIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 7.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CATALAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 3.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ITALIAN", 
+                "Genre" : "Samba"
+            }, 
+            "count" : 34.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "BOSNIAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "INDONESIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 6.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CATALAN", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SUNDANESE", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "GERMAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 21.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SPANISH", 
+                "Genre" : "Sertanejo"
+            }, 
+            "count" : 150.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "KINYARWANDA", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 2.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "INDONESIAN", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "DANISH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 5.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SPANISH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 529.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "FRENCH", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 62.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "GANDA", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 1.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "SPANISH", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 3513.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "BASQUE", 
+                "Genre" : "Rock"
+            }, 
+            "count" : 5.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "ITALIAN", 
+                "Genre" : "Hip Hop"
+            }, 
+            "count" : 8.0
+        }
+        { 
+            "_id" : {
+                "Lanuage" : "CROATIAN", 
+                "Genre" : "Pop"
+            }, 
+            "count" : 2.0
+        }
